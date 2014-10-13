@@ -141,16 +141,16 @@ fi
 mkdir -p .repo/local_manifests
 rm -f .repo/local_manifest.xml
 
-rm -rf $WORKSPACE/build_env
-git clone http://github.com/CyanogenMod/cm_build_config.git $WORKSPACE/build_env -b master
-check_result "Bootstrap failed"
+#rm -rf $WORKSPACE/build_env
+#git clone http://github.com/CyanogenMod/cm_build_config.git $WORKSPACE/build_env -b master
+#check_result "Bootstrap failed"
 
-if [ -f $WORKSPACE/build_env/bootstrap.sh ]
-then
-  bash $WORKSPACE/build_env/bootstrap.sh
-fi
+#if [ -f $WORKSPACE/build_env/bootstrap.sh ]
+#then
+#  bash $WORKSPACE/build_env/bootstrap.sh
+#fi
 
-cp $WORKSPACE/build_env/$REPO_BRANCH.xml .repo/local_manifests/dyn-$REPO_BRANCH.xml
+#cp $WORKSPACE/build_env/$REPO_BRANCH.xml .repo/local_manifests/dyn-$REPO_BRANCH.xml
 
 echo Core Manifest:
 cat .repo/manifest.xml
