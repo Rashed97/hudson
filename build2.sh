@@ -326,7 +326,7 @@ fi
 echo "$REPO_BRANCH-$RELEASE_MANIFEST" > .last_branch
 
 #time mka bacon recoveryzip recoveryimage checkapi
-time mka
+schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
 check_result "Build failed."
 
 if [ "$SIGN_BUILD" = "true" ]
