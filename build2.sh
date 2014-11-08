@@ -326,7 +326,7 @@ fi
 echo "$REPO_BRANCH-$RELEASE_MANIFEST" > .last_branch
 
 #time mka bacon recoveryzip recoveryimage checkapi
-time mka recoveryzip recoveryimage checkapi
+time mka
 check_result "Build failed."
 
 if [ "$SIGN_BUILD" = "true" ]
