@@ -209,7 +209,8 @@ then
     LUNCH=$(echo $LUNCH@$DEVICEVENDOR | sed -f $WORKSPACE/hudson/shared-repo.map)
 fi
 
-lunch $LUNCH
+lunch
+#lunch $LUNCH
 check_result "lunch failed."
 
 rm -f $OUT/cm-*.zip*
