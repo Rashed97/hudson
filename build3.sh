@@ -23,7 +23,6 @@ repo init -u https://android.googlesource.com/platform/manifest -b refs/tags/$RE
 else
 repo init -u https://github.com/CyanogenMod/android.git -b $SYNC_BRANCH $MANIFEST
 fi
-check_result "repo init failed."
 
 # make sure ccache is in PATH
 export PATH="$PATH:/opt/local/bin/:$PWD/prebuilts/misc/$(uname|awk '{print tolower($0)}')-x86/ccache"
@@ -33,7 +32,6 @@ mkdir -p .repo/local_manifests
 
 rm -rf $WORKSPACE/build_env
 git clone https://github.com/Rashed97/cm_build_config.git $WORKSPACE/build_env -b master
-check_result "Bootstrap failed"
 
 if [ -f $WORKSPACE/build_env/bootstrap.sh ]
 then
@@ -48,8 +46,6 @@ cd ../..
 
 echo Syncing...
 repo sync -d -c > /dev/null
-check_result "repo sync failed."
-echo Sync complete.
 
 # Unpack vendor/cm
 $WORKSPACE/hudson/cm-setup.sh
@@ -61,4 +57,4 @@ lunch $LUNCH
 
 # Perform the build
 #schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
-brunch d801
+mka
