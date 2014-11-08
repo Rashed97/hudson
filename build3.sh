@@ -60,8 +60,5 @@ $WORKSPACE/hudson/cm-setup.sh
 lunch $LUNCH
 
 # Perform the build
-schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@" otapackage
-check_result "Build failed."
-
-# Build is done, cleanup the environment
-cleanup
+#schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
+brunch d801
