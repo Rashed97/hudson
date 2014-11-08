@@ -318,14 +318,15 @@ if [ $TIME_SINCE_LAST_CLEAN -gt "12" -o $CLEAN = "true" ]
 then
   echo "Cleaning!"
   touch .clean
-  make clobber
+#  make clobber
 else
   echo "Skipping clean: $TIME_SINCE_LAST_CLEAN hours since last clean."
 fi
 
 echo "$REPO_BRANCH-$RELEASE_MANIFEST" > .last_branch
 
-time mka bacon recoveryzip recoveryimage checkapi
+#time mka bacon recoveryzip recoveryimage checkapi
+time mka recoveryzip recoveryimage checkapi
 check_result "Build failed."
 
 if [ "$SIGN_BUILD" = "true" ]
