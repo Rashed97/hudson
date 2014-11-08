@@ -1,0 +1,37 @@
+if [ ! -d "$REPO_BRANCH" ]; then
+  mkdir $REPO_BRANCH
+fi
+cd $REPO_BRANCH
+if [ ! -d ".repo" ]; then
+  repo init -u https://android.googlesource.com/platform/manifest -b refs/tags/$REPO_BRANCH
+fi
+cd .repo
+if [ -d "local_manifests" ]; then
+  rm -rf local_manifests
+fi
+mkdir local_manifests
+cd local_manifests
+if [ "$DEVICE" = "d801" ]; then
+  curl -O https://raw.githubusercontent.com/Rashed97/local_manifests/master/g2_staging-cm-12.0.xml
+fi
+cd ../..
+if [ "$CLEAN_DEVICE" = "true" ]; then
+  if [ "$DEVICE" = "d801" ]; then
+    VENDOR="lge"
+    rm -rf device/$VENDOR/$DEVICE
+  fi
+fi
+schedtool -B -n 1 -e ionice -n 1 repo sync -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
+. build/envsetup.sh
+lunch cm_$DEVICE-userdebug
+schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@" otapackage
+cd ..
+if [ ! -d "archive" ]; then
+  mkdir archive
+fi
+cd archive
+if [ ! -d "$REPO_BRANCH" ]; then
+  mkdir $REPO_BRANCH
+fi
+cd ../..
+cp $WORKSPACE/$REPO_BRANCH/out/target/product/$DEVICE/$TARGET_PRODUCT-ota-$BUILD_NUMBER.zip archive/$REPO_BRANCH/$TARGET_PRODUCT-ota-$BUILD_NUMBER.zip

@@ -126,7 +126,12 @@ fi
 
 rm -rf .repo/manifests*
 rm -f .repo/local_manifests/dyn-*.xml
-repo init -u $SYNC_PROTO://github.com/CyanogenMod/android.git -b $SYNC_BRANCH $MANIFEST
+if [ "$BASE" = "aosp" ]
+then
+repo init -u https://android.googlesource.com/platform/manifest -b refs/tags/$REPO_BRANCH
+else
+repo init -u https://github.com/CyanogenMod/android.git -b $SYNC_BRANCH $MANIFEST
+fi
 check_result "repo init failed."
 
 # make sure ccache is in PATH
@@ -150,7 +155,7 @@ then
   bash $WORKSPACE/build_env/bootstrap.sh
 fi
 
-cp $WORKSPACE/build_env/$REPO_BRANCH-caf-new.xml .repo/local_manifests/dyn-$REPO_BRANCH-caf-new.xml
+cp $WORKSPACE/build_env/$REPO_BRANCH.xml .repo/local_manifests/dyn-$REPO_BRANCH.xml
 
 echo Core Manifest:
 cat .repo/manifest.xml
@@ -163,9 +168,13 @@ if [[ "$RELEASE_TYPE" = "CM_RELEASE" || "$STABILIZATION_BRANCH" = "true" ]]
 then
   if [ -f  $WORKSPACE/build_env/$REPO_BRANCH-release.xml ]
   then
-    cp -f $WORKSPACE/build_env/$REPO_BRANCH-release.xml .repo/local_manifests/dyn-$REPO_BRANCH-caf-new.xml
+    cp -f $WORKSPACE/build_env/$REPO_BRANCH-release.xml .repo/local_manifests/dyn-$REPO_BRANCH.xml
   fi
 fi
+
+cd .repo/local_manifests
+curl -O https://raw.githubusercontent.com/Rashed97/local_manifests/master/g2_staging-cm-12.0.xml
+cd ../..
 
 echo Syncing...
 repo sync -d -c > /dev/null
