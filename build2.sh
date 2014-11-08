@@ -274,7 +274,7 @@ fi
 # include only the auto-generated locals
 TEMPSTASH=$(mktemp -d)
 mv .repo/local_manifests/* $TEMPSTASH
-mv $TEMPSTASH/roomservice.xml .repo/local_manifests/
+#mv $TEMPSTASH/roomservice.xml .repo/local_manifests/
 
 # Generate git logs for all platform repos
 rm -f $WORKSPACE/changecount
