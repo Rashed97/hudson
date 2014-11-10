@@ -126,7 +126,12 @@ fi
 
 rm -rf .repo/manifests*
 rm -f .repo/local_manifests/dyn-*.xml
-repo init -u $SYNC_PROTO://github.com/CyanogenMod/android.git -b $SYNC_BRANCH $MANIFEST
+if [ "$USE_RASHED_MANIFEST" = "true" ]
+then
+  repo init -u $SYNC_PROTO://github.com/Rashed97/android.git -b $SYNC_BRANCH $MANIFEST
+else
+  repo init -u $SYNC_PROTO://github.com/CyanogenMod/android.git -b $SYNC_BRANCH $MANIFEST
+fi
 check_result "repo init failed."
 
 # make sure ccache is in PATH
@@ -266,12 +271,6 @@ then
     python $WORKSPACE/hudson/xlationlint.py $GERRIT_CHANGES
     check_result "basic XML lint failed."
   fi
-  echo Resyncing...
-  repo sync -d -c > /dev/null
-  check_result "repo sync failed."
-  echo Resync complete.
-  lunch $LUNCH
-  check_result "lunch failed."
 fi
 
 # save manifest used for build (saving revisions as current HEAD)
