@@ -326,9 +326,18 @@ fi
 
 echo "$REPO_BRANCH-$RELEASE_MANIFEST" > .last_branch
 
-time mka bacon recoveryzip recoveryimage checkapi
+# We want to use the top version but the releasetools is pretty screwed up right now in cm-12.0
+if [ "$REPO_BRANCH" = "cm-12.0" ]
+then
+  time mka bacon
+else
+  time mka bacon recoveryzip recoveryimage checkapi
+fi
 check_result "Build failed."
 
+# Use the following on all the branches but cm-12.0, releasetools are terrible right now
+if [ ! "$REPO_BRANCH" = "cm-12.0" ]
+then
 if [ "$SIGN_BUILD" = "true" ]
 then
   MODVERSION=$(cat $OUT/system/build.prop | grep ro.cm.version | cut -d = -f 2)
@@ -419,4 +428,5 @@ then
     s3cmd --no-progress --disable-multipart -P put $WORKSPACE/archive/$f s3://cyngn-builds/release/$MODVERSION/$f > /dev/null 2> /dev/null
     check_result "Failure archiving $f"
   done
+fi
 fi
