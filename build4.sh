@@ -266,6 +266,12 @@ then
     python $WORKSPACE/hudson/xlationlint.py $GERRIT_CHANGES
     check_result "basic XML lint failed."
   fi
+  echo Resyncing...
+  repo sync -d -c > /dev/null
+  check_result "repo sync failed."
+  echo Resync complete.
+  lunch $LUNCH
+  check_result "lunch failed."
 fi
 
 # save manifest used for build (saving revisions as current HEAD)
