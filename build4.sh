@@ -341,8 +341,8 @@ fi
 check_result "Build failed."
 
 # Use the following on all the branches but cm-12.0, releasetools are terrible right now
-if [ ! "$REPO_BRANCH" = "cm-12.0" ]
-then
+#if [ ! "$REPO_BRANCH" = "cm-12.0" ]
+#then
 if [ "$SIGN_BUILD" = "true" ]
 then
   MODVERSION=$(cat $OUT/system/build.prop | grep ro.cm.version | cut -d = -f 2)
@@ -411,13 +411,6 @@ cleanup
 # chmod the files in case UMASK blocks permissions
 chmod -R ugo+r $WORKSPACE/archive
 
-# Add build to GetCM
-if [ "$JOB_NAME" = "android" -a "$USER" = "jenkins" ] || [ "$PUBLISH_GETCM" = "true" ]; then
-    echo "Adding build to GetCM"
-    echo python /opt/jenkins-utils/add_build.py --file `ls $WORKSPACE/archive/*.zip` --buildprop $WORKSPACE/archive/build.prop --buildnumber $BUILD_NO --releasetype $RELEASE_TYPE
-    python /opt/jenkins-utils/add_build.py --file `ls $WORKSPACE/archive/*.zip` --buildprop $WORKSPACE/archive/build.prop --buildnumber $BUILD_NO --releasetype $RELEASE_TYPE
-fi
-
 CMCP=$(which cmcp)
 if [ ! -z "$CMCP" -a ! -z "$CM_RELEASE" ]
 then
@@ -434,4 +427,4 @@ then
     check_result "Failure archiving $f"
   done
 fi
-fi
+#fi
