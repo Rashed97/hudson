@@ -185,24 +185,10 @@ then
   cd ../..
 fi
 
-if [ "$ZIP_FORMAT" = "new" ]
-then
-  rm -rf build
-fi
-
 echo Syncing...
 repo sync -d -c > /dev/null
 check_result "repo sync failed."
 echo Sync complete.
-
-if [ "$ZIP_FORMAT" = "old" ]
-then
-  cd build
-  repo abandon build .
-  repo start build .
-  git fetch http://Rashed@review.cyanogenmod.org/CyanogenMod/android_build refs/changes/19/76519/2 && git cherry-pick FETCH_HEAD
-  cd ..
-fi
 
 if [ -f $WORKSPACE/hudson/$REPO_BRANCH-setup.sh ]
 then
