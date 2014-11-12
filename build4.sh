@@ -173,10 +173,15 @@ then
 fi
 
 # If we want to use different device repos than CM, then use this
-if [ "$USE_LOCAL_MANIFESTS" = "true" ]
+if [ "$USE_LOCAL_MANIFESTS" = "branch" ]
 then
   cd .repo/local_manifests
   curl -O https://raw.githubusercontent.com/Rashed97/local_manifests/master/g2_$REPO_BRANCH.xml
+  cd ../..
+elif [ "$USE_LOCAL_MANIFESTS" = "branch-caf-new" ]
+then
+  cd .repo/local_manifests
+  curl -o g2_$REPO_BRANCH.xml https://raw.githubusercontent.com/Rashed97/local_manifests/master/g2_$REPO_BRANCH-caf-new.xml
   cd ../..
 fi
 
